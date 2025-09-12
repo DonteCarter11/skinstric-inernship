@@ -11,3 +11,20 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+@font-face {
+  font-family: 'Roobert';
+  src: url('../public/Fonts/RoobertCollectionVF-TRIAL.ttf');
+  font-weight: normal;
+}
+
+p {
+  font-family: 'Roobert';
+  font-weight: 300;
+  color: black;
+  font-size: 128px;
+  line-height: 120px;
+  letter-spacing: -7px;
+  align-items: center;
+}
