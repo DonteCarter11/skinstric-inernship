@@ -3,9 +3,9 @@ import Landing from "../Components/home/landing";
 
 const Home = () => {
   return (
-    <div id="wrapper">
-        <Landing />
-      </div>
+    <div>
+      <Landing />
+    </div>
   );
 };
 
