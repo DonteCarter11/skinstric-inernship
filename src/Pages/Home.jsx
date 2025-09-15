@@ -1,11 +1,11 @@
 import React from "react";
-import Landing from "../Components/home/Landing";
+import Landing from "../Components/home/landing";
 
 const Home = () => {
   return (
     <div id="wrapper">
-      <Landing />
-    </div>
+        <Landing />
+      </div>
   );
 };
 
