@@ -6,12 +6,12 @@ const Nav = () => {
   return (
     <nav>
       <div className="flex flex-row pt-1 scale-75 justify-center items-center ">
-        <a
-          href=""
+        <Link
+          to={`/`}
           className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md transition-colors h-9 px-4 py-2 font-semibold text-sm mr-2 line-clamp-4 leading-[16px] text-[#1A1B1C] z-1000"
         >
           SKINSTRIC
-        </a>
+        </Link>
         <img
           src={intro__logo}
           alt=""
