@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Rombus from "../Components/UI/Rombus";
 
-const Testing = () => {
+const TestingPage = () => {
   // const [name, setName] = useState("");
   // const [location, setLocation] = useState("");
 
@@ -41,4 +41,4 @@ const Testing = () => {
   );
 };
 
-export default Testing;
+export default TestingPage;
