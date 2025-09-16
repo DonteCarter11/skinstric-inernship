@@ -22,7 +22,6 @@ code {
   font-weight: normal;
 }
 
-
 /* 
 Nav Bar
 */
@@ -34,4 +33,25 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.spin-slow {
+  animation: spin 85s linear infinite;
+}
+
+.spin-medium {
+  animation: spin 70s linear infinite;
+}
+
+.spin-fast {
+  animation: spin 50s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
 }

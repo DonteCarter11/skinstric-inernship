@@ -22,7 +22,7 @@ const landing = () => {
       </p>
       {/* Right Section */}
       <div className="fixed right-4 top-1/2 -translate-y-1/2">
-        <button className="border-none bg-transparent flex items-center gap-2 text-white font-semibold text-[10px] leading-4 tracking-tight">
+        <button className="border-none bg-transparent flex items-center gap-2 text-black font-semibold text-[10px] leading-4 tracking-tight ">
           TAKE TEST
           <img src={rightArrow} alt="" className="" />
         </button>
@@ -30,7 +30,7 @@ const landing = () => {
 
       {/* Left Section */}
       <div className="fixed left-4 top-1/2 -translate-y-1/2">
-        <button className="border-none bg-transparent flex items-center gap-2 text-white font-semibold text-[10px] leading-4 tracking-tight">
+        <button className="border-none bg-transparent flex items-center gap-2 text-black font-semibold text-[10px] leading-4 tracking-tight ">
           <img src={leftArrow} alt="" className="scale-x-[-1]" />
           DISCOVER A.I
         </button>
