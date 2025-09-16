@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import Rombus from "../Components/UI/Rombus";
 
 const Testing = () => {
-  const [name, setName] = useState("");
-  const [location, setLocation] = useState("");
+  // const [name, setName] = useState("");
+  // const [location, setLocation] = useState("");
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
