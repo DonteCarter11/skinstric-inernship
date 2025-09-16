@@ -1,9 +1,15 @@
-import React from "react";
-import largeTri from "../Assets/Rectangle 2780.svg";
-import midTri from "../Assets/Rectangle 2779.svg";
-import smallTri from "../Assets/Rectangle 2778.svg";
+import React, { useState } from "react";
+import Rombus from "../Components/UI/Rombus";
 
 const Testing = () => {
+  const [name, setName] = useState("");
+  const [location, setLocation] = useState("");
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+    }
+  };
+
   return (
     <div>
       <div className="absolute top-16 left-9 text-left">
@@ -25,23 +31,10 @@ const Testing = () => {
               type="text"
               placeholder="Introduce Yourself"
               className="text-5xl sm:text-6xl font-normal text-center bg-transparent border-b border-black focus:outline-none appearance-none w-[372px] sm:w-[432px] pt-1 tracking-[-0.07em] leading-[64px] text-[#1A1B1C] z-10l"
+              onKeyDown={handleKeyDown}
             />
           </form>
-          <img
-            src={largeTri}
-            alt="Large Diamond"
-            className="absolute top-1/2 left-1/2 -translate-x-[50%] -translate-y-1/2 w-[480px] h-[480px] md:w-[762px] md:h-[762px] spin-fast"
-          />
-          <img
-            src={midTri}
-            alt="Medium Diamond"
-            className="absolute top-1/2 left-1/2 -translate-x-[50%] -translate-y-1/2 w-[400px] h-[400px] md:w-[682px] md:h-[682px] spin-medium"
-          />
-          <img
-            src={smallTri}
-            alt="Small Diamond"
-            className="absolute top-1/2 left-1/2 -translate-x-[50%] -translate-y-1/2 w-[320px] h-[320px] md:w-[602px] md:h-[602px] spin-slow"
-          />
+          <Rombus />
         </div>
       </div>
     </div>

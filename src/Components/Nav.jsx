@@ -22,6 +22,7 @@ const Nav = () => {
         ENTER CODE
       </button>
     </nav>
+    
   );
 };
 
