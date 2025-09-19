@@ -1,6 +1,8 @@
 import React from "react";
 import rightArrow from "../../Assets/buttin-icon-shrunk.svg";
 import leftArrow from "../../Assets/buttin-icon-shrunk.svg";
+import { Link } from "react-router-dom";
+import triangle from "../../Assets/Rectangle 2778.svg";
 
 const landing = () => {
   return (
@@ -23,17 +25,30 @@ const landing = () => {
         tailored to what your skin needs.
       </p>
       <div className="fixed right-4 top-1/2 -translate-y-1/2">
-        <button className="border-none bg-transparent flex items-center gap-2 text-black font-semibold text-[10px] leading-4 tracking-tight ">
-          TAKE TEST
-          <img src={rightArrow} alt="" className="" />
-        </button>
+        <Link to={`/testing`}>
+          <button className="border-none bg-transparent flex items-center gap-2 text-black font-semibold text-[10px] leading-4 tracking-tight ">
+            TAKE TEST
+            <img src={rightArrow} alt="" className="" />
+          </button>
+        </Link>
+      </div>
+
+      <div
+        id="right-section"
+        className="hidden lg:block fixed top-1/2 right-[calc(-53vw)] xl:right-[calc(-50vw)] -translate-y-1/2 w-[500px] h-[500px] transition-opacity duration-500 ease-in-out opacity-100"
+      >
+        <div className="relative w-full h-full">
+          <div className="w-full h-full border border-dotted border-[#A0A4AB] rotate-45 absolute inset-0"></div>
+        </div>
       </div>
 
       <div className="fixed left-4 top-1/2 -translate-y-1/2">
-        <button className="border-none bg-transparent flex items-center gap-2 text-black font-semibold text-[10px] leading-4 tracking-tight ">
-          <img src={leftArrow} alt="" className="scale-x-[-1]" />
-          DISCOVER A.I
-        </button>
+        <Link>
+          <button className="border-none bg-transparent flex items-center gap-2 text-black font-semibold text-[10px] leading-4 tracking-tight ">
+            <img src={leftArrow} alt="" className="scale-x-[-1]" />
+            DISCOVER A.I
+          </button>
+        </Link>
       </div>
     </div>
   );

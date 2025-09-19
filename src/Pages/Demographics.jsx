@@ -1,6 +1,8 @@
 import React from "react";
+import Arrows from "../Components/UI/Arrows";
 
 const Demographics = () => {
+  
   return (
     <div>
       <div className="h-screen md:h-[90vh] flex flex-col md:mt-5">
@@ -42,6 +44,7 @@ const Demographics = () => {
             </div>
           </div>
         </div>
+      <Arrows />
       </div>
     </div>
   );
