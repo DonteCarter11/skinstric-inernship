@@ -10,8 +10,8 @@ const Demographics = () => {
   const [hasError, setHasError] = useState(false);
   const [predictions, setPredictions] = useState(null);
   const [sortedData, setSortedData] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState("race"); // 'race', 'age', or 'gender'
-  const [selectedItemIndex, setSelectedItemIndex] = useState(0); // Index of selected item within category
+  const [selectedCategory, setSelectedCategory] = useState("race"); 
+  const [selectedItemIndex, setSelectedItemIndex] = useState(0);
 
   useEffect(() => {
     try {
@@ -28,7 +28,6 @@ const Demographics = () => {
       const topAge = findHighest(apiData.age);
       const topGender = findHighest(apiData.gender);
 
-      // Create sorted arrays for all categories
       const sorted = {
         race: sortCategoryData(apiData.race),
         age: sortCategoryData(apiData.age),
@@ -52,12 +51,10 @@ const Demographics = () => {
     }
   }, [location.state, navigate]);
 
-  // Reset selected item index when category changes
   useEffect(() => {
     setSelectedItemIndex(0);
   }, [selectedCategory]);
 
-  // Function to find highest prediction
   const findHighest = (categoryData) => {
     if (!categoryData) return { name: "Unknown", confidence: 0 };
 
@@ -77,7 +74,6 @@ const Demographics = () => {
     };
   };
 
-  // Function to sort category data from highest to lowest
   const sortCategoryData = (categoryData) => {
     if (!categoryData) return [];
 
@@ -87,22 +83,19 @@ const Demographics = () => {
         percentage: Math.round(score * 100),
         rawScore: score,
       }))
-      .sort((a, b) => b.rawScore - a.rawScore); // Highest to lowest
+      .sort((a, b) => b.rawScore - a.rawScore); 
   };
 
-  // Function to get current category data
   const getCurrentCategoryData = () => {
     if (!sortedData) return [];
     return sortedData[selectedCategory] || [];
   };
 
-  // Function to get currently selected item
   const getSelectedItem = () => {
     const currentData = getCurrentCategoryData();
     return currentData[selectedItemIndex] || { name: "Loading", percentage: 0 };
   };
 
-  // Function to get category display name
   const getCategoryDisplayName = () => {
     const names = {
       race: "RACE",
@@ -112,7 +105,6 @@ const Demographics = () => {
     return names[selectedCategory] || "CATEGORY";
   };
 
-  // Function to handle item selection
   const handleItemSelect = (index) => {
     setSelectedItemIndex(index);
   };
