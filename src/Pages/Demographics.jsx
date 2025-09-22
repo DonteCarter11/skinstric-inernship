@@ -1,8 +1,136 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Arrows from "../Components/UI/Arrows";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Demographics = () => {
-  
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
+  const [predictions, setPredictions] = useState(null);
+  const [sortedData, setSortedData] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState("race"); // 'race', 'age', or 'gender'
+  const [selectedItemIndex, setSelectedItemIndex] = useState(0); // Index of selected item within category
+
+  useEffect(() => {
+    try {
+      const apiData = location.state?.analysisData?.data;
+
+      if (!apiData) {
+        console.log("No API data found, redirecting...");
+        setHasError(true);
+        setTimeout(() => navigate("/camera"), 2000);
+        return;
+      }
+
+      const topRace = findHighest(apiData.race);
+      const topAge = findHighest(apiData.age);
+      const topGender = findHighest(apiData.gender);
+
+      // Create sorted arrays for all categories
+      const sorted = {
+        race: sortCategoryData(apiData.race),
+        age: sortCategoryData(apiData.age),
+        gender: sortCategoryData(apiData.gender),
+      };
+
+      setPredictions({
+        topRace: topRace.name,
+        topAge: topAge.name,
+        topGender: topGender.name,
+        raceConfidence: topRace.confidence,
+        ageConfidence: topAge.confidence,
+        genderConfidence: topGender.confidence,
+      });
+
+      setSortedData(sorted);
+      setIsLoading(false);
+    } catch (error) {
+      setHasError(true);
+      setIsLoading(false);
+    }
+  }, [location.state, navigate]);
+
+  // Reset selected item index when category changes
+  useEffect(() => {
+    setSelectedItemIndex(0);
+  }, [selectedCategory]);
+
+  // Function to find highest prediction
+  const findHighest = (categoryData) => {
+    if (!categoryData) return { name: "Unknown", confidence: 0 };
+
+    let bestName = "";
+    let bestScore = 0;
+
+    for (const [name, score] of Object.entries(categoryData)) {
+      if (score > bestScore) {
+        bestScore = score;
+        bestName = name;
+      }
+    }
+
+    return {
+      name: bestName,
+      confidence: Math.round(bestScore * 100),
+    };
+  };
+
+  // Function to sort category data from highest to lowest
+  const sortCategoryData = (categoryData) => {
+    if (!categoryData) return [];
+
+    return Object.entries(categoryData)
+      .map(([name, score]) => ({
+        name: name,
+        percentage: Math.round(score * 100),
+        rawScore: score,
+      }))
+      .sort((a, b) => b.rawScore - a.rawScore); // Highest to lowest
+  };
+
+  // Function to get current category data
+  const getCurrentCategoryData = () => {
+    if (!sortedData) return [];
+    return sortedData[selectedCategory] || [];
+  };
+
+  // Function to get currently selected item
+  const getSelectedItem = () => {
+    const currentData = getCurrentCategoryData();
+    return currentData[selectedItemIndex] || { name: "Loading", percentage: 0 };
+  };
+
+  // Function to get category display name
+  const getCategoryDisplayName = () => {
+    const names = {
+      race: "RACE",
+      age: "AGE",
+      gender: "GENDER",
+    };
+    return names[selectedCategory] || "CATEGORY";
+  };
+
+  // Function to handle item selection
+  const handleItemSelect = (index) => {
+    setSelectedItemIndex(index);
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
+          <p>Processing analysis...</p>
+        </div>
+      </div>
+    );
+  }
+
+  const currentData = getCurrentCategoryData();
+  const selectedItem = getSelectedItem();
+
   return (
     <div>
       <div className="h-screen md:h-[90vh] flex flex-col md:mt-5">
@@ -19,32 +147,146 @@ const Demographics = () => {
                 Predicted Race & Age
               </h4>
             </div>
-            <div className="grid md:grid-cols-[1.5fr_8.5fr_3.15fr] gap-4 mt-10 mb-40 md:gap-4 pb-0 md:pb-0 md:mb-0">
+            <div className="grid md:grid-cols-[1.5fr_8.5fr_3.15fr] gap-4  mb-40 md:gap-4 pb-0 md:pb-0 md:mb-0">
               <div className="bg-white-100 space-y-3 md:flex md:flex-col h-[62%]">
-                <div className="p-3 cursor-pointer  bg-[#1A1B1C] text-white hover:bg-black flex-1 flex flex-col justify-between hover:bg-[#E1E1E2] border-t">
-                  <p className="text-base font-semibold">black</p>
-                  <h4 className="text-base font-semibold mb-1">
-                    RACE
-                  </h4>
+                <div
+                  className={`p-3 cursor-pointer flex-1 flex flex-col justify-between border-t capitalize ${
+                    selectedCategory === "race"
+                      ? "bg-[#1A1B1C] text-white"
+                      : "bg-[#F3F3F4] hover:bg-[#E1E1E2]"
+                  }`}
+                  onClick={() => setSelectedCategory("race")}
+                >
+                  <p className="text-base font-semibold">
+                    {predictions.topRace}
+                  </p>
+                  <h4 className="text-base font-semibold mb-1">RACE</h4>
                 </div>
-                <div className="p-3 cursor-pointer  bg-[#F3F3F4] flex-1 flex flex-col justify-between hover:bg-[#E1E1E2] border-t">
-                  <p className="text-base font-semibold">60-90</p>
-                  <h4 className="text-base font-semibold mb-1">
-                    AGE
-                  </h4>
+
+                <div
+                  className={`p-3 cursor-pointer flex-1 flex flex-col justify-between border-t ${
+                    selectedCategory === "age"
+                      ? "bg-[#1A1B1C] text-white"
+                      : "bg-[#F3F3F4] hover:bg-[#E1E1E2]"
+                  }`}
+                  onClick={() => setSelectedCategory("age")}
+                >
+                  <p className="text-base font-semibold">
+                    {predictions.topAge}
+                  </p>
+                  <h4 className="text-base font-semibold mb-1">AGE</h4>
                 </div>
-                <div className="p-3 cursor-pointer  bg-[#F3F3F4] flex-1 flex flex-col justify-between hover:bg-[#E1E1E2] border-t">
-                  <p className="text-base font-semibold">male</p>
-                  <h4 className="text-base font-semibold mb-1">
-                    SEX
-                  </h4>
+
+                <div
+                  className={`p-3 cursor-pointer flex-1 flex flex-col justify-between border-t uppercase ${
+                    selectedCategory === "gender"
+                      ? "bg-[#1A1B1C] text-white"
+                      : "bg-[#F3F3F4] hover:bg-[#E1E1E2]"
+                  }`}
+                  onClick={() => setSelectedCategory("gender")}
+                >
+                  <p className="text-base font-semibold">
+                    {predictions.topGender}
+                  </p>
+                  <h4 className="text-base font-semibold mb-1">GENDER</h4>
                 </div>
               </div>
-              <div className="relative bg-gray-100 p-4 flex flex-col items-center justify-center md:h-[57vh] md:border-t"></div>
+
+              <div className="relative bg-gray-100 p-4 flex flex-col items-center justify-center md:h-[57vh] md:border-t ">
+                <p className="hidden md:block md:absolute text-[40px] mb-2 left-5 top-2 capitalize">
+                  {selectedCategory === "age"
+                    ? `${selectedItem.name} y.o`
+                    : selectedItem.name}
+                </p>
+                <div className="relative md:absolute w-full max-w-[384px] aspect-square mb-4 md:right-5 md:bottom-2">
+                  <div className="width: 100%; height: 100%; max-height: 384px; position: relative; transform: scale(1); transform-origin: center center;">
+                    <svg
+                      className="w-full h-full transform -rotate-90 "
+                      viewBox="0 0 256 256"
+                    >
+                      <circle
+                        cx="128"
+                        cy="128"
+                        r="112"
+                        stroke="#E5E7EB"
+                        strokeWidth="3"
+                        fill="none"
+                      />
+                      <circle
+                        cx="128"
+                        cy="128"
+                        r="112"
+                        stroke="#1A1B1C"
+                        strokeWidth="3"
+                        fill="none"
+                        strokeDasharray={`${2 * Math.PI * 112}`}
+                        strokeDashoffset={`${
+                          2 *
+                          Math.PI *
+                          112 *
+                          (1 - selectedItem.percentage / 100)
+                        }`}
+                        strokeLinecap="round"
+                        className="transition-all duration-1000 ease-in-out"
+                      />
+                    </svg>
+                  </div>
+
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-center ">
+                    <div className="text-xl text-[#1A1B1C] mb-2">
+                      {selectedItem.percentage}%
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-gray-100 pt-4 pb-4 md:border-t capitalize">
+                <div className="space-y-0">
+                  <div className="flex justify-between px-4">
+                    <h4 className="text-base leading-[24px] tracking-tight font-medium mb-2">
+                      {getCategoryDisplayName()}
+                    </h4>
+                    <h4 className="text-base leading-[24px] tracking-tight font-medium mb-2">
+                      A.I. CONFIDENCE
+                    </h4>
+                  </div>
+
+                  {currentData.map((item, index) => (
+                    <div
+                      key={item.name}
+                      className={`flex items-center justify-between h-[48px] px-4 cursor-pointer gap-1 ${
+                        index === selectedItemIndex
+                          ? "bg-[#1A1B1C] text-white hover:bg-black"
+                          : "hover:bg-[#E1E1E2]"
+                      }`}
+                      onClick={() => handleItemSelect(index)}
+                    >
+                      <input
+                        src=""
+                        id="diamond"
+                        alt=""
+                        className=" peer rounded-none appearance-none"
+                        type="radio"
+                      />
+                      <label for="diamond" className="relative flex ">
+                        <span className="relative w-[12px] h-[12px] mr-2 border border-slate-400 peer-checked:bg-white duration-100 ease-in-out rotate-45">
+                          <span className="absolute block w-10/12 h-10/12 transform rotate-45 top-0 left-0 peer-checked:bg-white scale-0 peer-checked:scale-100 duration-150 ease-in-out"></span>
+                        </span>
+                      </label>
+                      <span className="font-normal text-base leading-6 tracking-tight">
+                        {item.name}
+                      </span>
+                      <span className="font-normal text-base leading-6 tracking-tight ml-auto">
+                        {item.percentage}%
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      <Arrows />
+        <Arrows />
       </div>
     </div>
   );
