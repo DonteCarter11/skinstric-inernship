@@ -5,6 +5,8 @@ import TestingPage from "./Pages/TestingPage"
 import Camera from "./Pages/Camera"
 import Analysis from "./Pages/Analysis"
 import Demographics from "./Pages/Demographics"
+import Capture from "./Components/Capture";
+import PhotoTaker from "./Pages/PhotoTaker";
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
           <Route path="/camera" element={<Camera />} />
           <Route path="/analysis" element={<Analysis />} />
           <Route path="/demographics" element={<Demographics />} />
+          <Route path="/capture" element={<Capture />} />
+          <Route path="/photo" element={<PhotoTaker />} />
         </Routes>
       </Router>
     </div>

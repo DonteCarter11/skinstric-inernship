@@ -13,6 +13,8 @@ const Demographics = () => {
   const [selectedCategory, setSelectedCategory] = useState("race"); 
   const [selectedItemIndex, setSelectedItemIndex] = useState(0);
 
+  
+
   useEffect(() => {
     try {
       const apiData = location.state?.analysisData?.data;
