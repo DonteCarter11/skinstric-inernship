@@ -1,5 +1,5 @@
 import React from "react";
-import Landing from "../Components/home/landing";
+import Landing from "../Components/home/Landing";
 
 const Home = () => {
   return (
