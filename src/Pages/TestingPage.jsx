@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Rombus from "../Components/UI/Rombus";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom"; 
+import { Link, useNavigate } from "react-router-dom";
 import Arrows from "../Components/UI/Arrows";
 
 const TestingPage = () => {
@@ -12,11 +12,18 @@ const TestingPage = () => {
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
 
-  const navigate = useNavigate(); 
+  const isValidInput = (text) => {
+    return /^[A-Za-z\s\-']+$/.test(text);
+  };
+  const navigate = useNavigate();
 
   const handleSubmit = async () => {
     if (!name.trim() || !location.trim()) {
       setError("Please fill in both fields");
+      return;
+    }
+    if (!isValidInput(name) || !isValidInput(location)) {
+      setError("Please use only letters");
       return;
     }
 
@@ -54,9 +61,23 @@ const TestingPage = () => {
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       if (currentStep === 1 && name.trim()) {
+        if (!isValidInput(name)) {
+          setError(
+            "Please use only letters and spaces (no numbers or symbols)"
+          );
+          setName("");
+          return;
+        }
         setCurrentStep(2);
         setError(null);
       } else if (currentStep === 2 && location.trim()) {
+        if (!isValidInput(location)) {
+          setError(
+            "Please use only letters and spaces (no numbers or symbols)"
+          );
+          setLocation("");
+          return;
+        }
         handleSubmit();
       } else {
         setError(
@@ -82,7 +103,11 @@ const TestingPage = () => {
           <p className="text-sm text-gray-400 tracking-wider uppercase mb-4">
             {currentStep === 1 ? "click to type" : "now enter your location"}
           </p>
-
+          {error && (
+            <div className="  text-red-500 py-3 px-4 z-50 text-center">
+              <span className="font-semibold text-sm">{error}</span>
+            </div>
+          )}
           <div className="relative z-10">
             {currentStep === 1 && (
               <input
