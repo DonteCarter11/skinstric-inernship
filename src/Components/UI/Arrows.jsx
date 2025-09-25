@@ -17,8 +17,7 @@ const Arrows = ({ pageFlow, customButtonText }) => {
         '/testing': 'Proceed',
         '/camera': '',
         '/analysis': 'Get Summary',
-        '/demographics': 'Summary',
-        '/summary': 'Dashboard'
+        '/demographics': '',
     };
     
     const currentPageFlow = pageFlow || defaultPageFlow;

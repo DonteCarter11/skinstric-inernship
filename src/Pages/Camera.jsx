@@ -177,7 +177,20 @@ const Camera = () => {
         </div>
       </div>
 
-      <Arrows />
+      <div className="absolute bottom-[8px] left-6 z-10">
+        <button onClick={() => navigate('/')}>
+          <div className="group hidden sm:flex flex-row relative justify-center items-center">
+            <div className="w-12 h-12 hidden sm:flex justify-center border border-black rotate-45 scale-[0.85] group-hover:scale-[0.92] ease duration-300">
+              <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 scale-[0.9] rotate-12 hidden sm:block group-hover:scale-[0.92] ease duration-300">
+                ▶
+              </span>
+            </div>
+            <span className="text-sm font-semibold hidden sm:block ml-6 uppercase">
+              back
+            </span>
+          </div>
+        </button>
+      </div>
     </div>
   );
 };
