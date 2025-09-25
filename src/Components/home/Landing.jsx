@@ -15,8 +15,8 @@ const Landing = () => {
       </div>
 
       <div
-        className={`w-full h-full flex justify-center items-center px-2 py-4 transition-all duration-500 ${
-          isHovered ? "lg:justify-start lg:ml-[-400px]" : ""
+        className={`w-full h-full flex justify-center items-center px-2 py-4 transition-all duration-1000 ease-out ${
+          isHovered ? " lg:ml-[-500px]" : ""
         } lg:flex-row flex-col relative z-10`}
       >
         <div className={`transition-all duration-500`}>
@@ -51,7 +51,7 @@ const Landing = () => {
       </p>
 
       <div
-        className="hidden lg:block fixed right-4 top-1/2 -translate-y-1/2"
+        className="hidden lg:block fixed right-4 top-1/2 -translate-y-1/2 z-50"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
